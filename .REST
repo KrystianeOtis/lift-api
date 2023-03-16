@@ -1,0 +1,14 @@
+GET http://localhost:8080/users HTTP/1.1
+
+### Create user
+POST http://localhost:8080/users HTTP/1.1
+content-type: application/json
+
+{
+    "email" : "test@test.test", 
+    "firstName": "Brian",
+    "lastName": "Peterson",
+    "weight" : "120",
+    "height": "120",
+    "goals": "I want to be taller"
+}
