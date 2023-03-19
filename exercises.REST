@@ -1,0 +1,23 @@
+### Get single exercise by id
+GET http://localhost:8080/exercises/6416897b5691db3f93af7a1f HTTP/1.1
+
+### Get exercise by category
+GET http://localhost:8080/exercises/chest HTTP/1.1
+
+### Get all exercises
+GET http://localhost:8080/exercises HTTP/1.1
+
+
+### Create Exercise 
+POST http://localhost:8080/exercises HTTP/1.1
+content-type: application/json
+
+ {
+            "exercise_category": "Chest",
+            "name": "Push-ups",
+            "muscle_group": "Chest, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Start with your arms shoulder-width apart in a plank position with your arms fully extended. Lower your body towards the ground with your elbows tucked in. Return to starting position.",
+            "equipment": "None"
+        }
