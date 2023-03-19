@@ -4,7 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 const getAll = (req, res) => {
   mongodb
     .getDb()
-    .db("Lift")
+    .db('Lift')
     .collection('exercises')
     .find()
     .toArray((err, lists) => {
@@ -18,15 +18,31 @@ const getAll = (req, res) => {
 
 const getSingle = (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid exercise id.');  
+    res.status(400).json('Must use a valid exercise id.');
   }
-  const userID = new ObjectId(req.params.id);
+  const workoutId = new ObjectId(req.params.id);
   mongodb
     .getDb()
-    .db("Lift")
-    .collection('exercise')
-    // CHANGE THIS TO MATCH ID, IT MIGHT NOT BE STORED AS USERID
-    .find({ userID: userID })
+    .db('Lift')
+    .collection('exercises')
+    .find({ _id: workoutId })
+    .toArray((err, result) => {
+      if (err) {
+        res.status(400).json({ message: err });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(result[0]);
+    });
+};
+
+const getCategory = (req, res) => {
+  let category = req.params.category;
+
+  mongodb
+    .getDb()
+    .db('Lift')
+    .collection('exercises')
+    .find({ exercise_category: category })
     .toArray((err, result) => {
       if (err) {
         res.status(400).json({ message: err });
@@ -38,20 +54,22 @@ const getSingle = (req, res) => {
 
 const createExercise = async (req, res) => {
   const exercise = {
-    // CHANGE THIS INFO TO MATCH EXERCISE VALUE
-    email : req.body.email, 
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    weight: req.body.weight,
-    height: req.body.height,
-    goals: req.body.goals,
+    exercise_category: req.body.exercise_category,
+    name: req.body.name,
+    muscle_group: req.body.muscle_group,
+    sets: req.body.sets,
+    reps: req.body.reps,
+    description: req.body.description,
+    equipment: req.body.equipment
   };
-  const response = await mongodb.getDb().db("Lift").collection('exercises').insertOne(exercise);
+
+  const response = await mongodb.getDb().db('Lift').collection('exercises').insertOne(exercise);
   if (response.acknowledged) {
     res.status(201).json(response);
   } else {
     res.status(500).json(response.error || 'Some error occurred while creating the exercise.');
   }
+  console.log(exercise);
 };
 
 // const updateExercise = async (req, res) => {
@@ -96,7 +114,8 @@ const createExercise = async (req, res) => {
 module.exports = {
   getAll,
   getSingle,
-  createExercise,
+  getCategory,
+  createExercise
   // updatePlayer,
   // deletePlayer
 };

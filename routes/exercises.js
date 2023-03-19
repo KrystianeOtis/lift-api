@@ -4,11 +4,13 @@ const router = express.Router();
 
 const exercises = require('../controllers/exercises.js');
 
-router.get('/', exercises.getAll); 
+router.get('/', exercises.getAll);
 
 router.get('/:id', exercises.getSingle);
 
-router.post('/', exercises.createUser);
+//router.get('/:category', exercises.getCategory);
+
+router.post('/', exercises.createExercise);
 
 // router.put('/:id', user_info.updatePlayer);
 
