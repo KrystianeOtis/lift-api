@@ -1,104 +1,117 @@
 {
     "back-workouts": [
         {
-            "exercise name": "Deadlifts",
-            "exercise region": "Lower back, glutes, hamstrings",
+            "exercise_category": "Back",
+            "name": "Deadlifts",
+            "muscle_group": "Lower back, glutes, hamstrings",
             "sets": 3,
             "reps": 8,
             "description": "Stand with feet hip-width apart, grip bar with hands shoulder-width apart, keep back straight, and lift the bar by extending hips and knees.",
             "equipment": "Barbell, weights"
         },
         {
-            "exercise name": "Bent-over rows",
-            "exercise region": "Upper and mid back, biceps",
+            "exercise_category": "Back",
+            "name": "Bent-over rows",
+            "muscle_group": "Upper and mid back, biceps",
             "sets": 3,
             "reps": 10,
             "description": "Bend forward at the waist with knees slightly bent, grasp barbell with hands shoulder-width apart, and pull the bar towards your chest.",
             "equipment": "Barbell, weights"
         },
         {
-            "exercise name": "Pull-ups",
-            "exercise region": "Upper back, shoulders, biceps",
+            "exercise_category": "Back",
+            "name": "Pull-ups",
+            "muscle_group": "Upper back, shoulders, biceps",
             "sets": 3,
             "reps": 10,
             "description": "Grab a pull-up bar with a wide grip, pull yourself up until your chin is above the bar, and lower yourself back down.",
             "equipment": "Pull-up bar"
         },
         {
-            "exercise name": "Lat pulldowns",
-            "exercise region": "Upper back, shoulders, biceps",
+            "exercise_category": "Back",
+            "name": "Lat pulldowns",
+            "muscle_group": "Upper back, shoulders, biceps",
             "sets": 3,
             "reps": 12,
             "description": "Sit at a lat pulldown machine, grasp the bar with hands wider than shoulder-width apart, and pull the bar down to your chest.",
             "equipment": "Lat pulldown machine"
         },
         {
-            "exercise name": "Seated cable rows",
-            "exercise region": "Upper and mid back, biceps",
+            "exercise_category": "Back",
+            "name": "Seated cable rows",
+            "muscle_group": "Upper and mid back, biceps",
             "sets": 3,
             "reps": 12,
             "description": "Sit at a cable row machine, grasp the handles with hands shoulder-width apart, and pull the handles towards your chest while keeping your back straight.",
             "equipment": "Cable row machine"
         },
         {
-            "exercise name": "Back extensions",
-            "exercise region": "Lower back",
+            "exercise_category": "Back",
+            "name": "Back extensions",
+            "muscle_group": "Lower back",
             "sets": 3,
             "reps": 12,
             "description": "Lie face down on a back extension machine, hook your feet under the padded bar, and lift your upper body until your back is straight.",
             "equipment": "Back extension machine"
         },
-                {
+        {
+            "exercise_category": "Back",
             "name": "Bent Over Rows",
-            "region": "Middle Back",
+            "muscle_group": "Middle Back",
             "sets": 4,
             "reps": 8,
             "description": "Hold a barbell with your palms facing down, bend over at the waist, and keep your back straight. Pull the barbell up to your chest, then lower it back down.",
             "equipment": "Barbell"
         },
         {
+            "exercise_category": "Back",
             "name": "Seated Cable Rows",
-            "region": "Middle Back",
+            "muscle_group": "Middle Back",
             "sets": 3,
             "reps": 15,
             "description": "Sit at a cable row machine and grab the handles with your palms facing each other. Pull the handles back towards your torso, then slowly release them forward.",
             "equipment": "Cable row machine"
         },
         {
+            "exercise_category": "Back",
             "name": "Dumbbell Rows",
-            "region": "Middle Back",
+            "muscle_group": "Middle Back",
             "sets": 3,
             "reps": 12,
             "description": "Hold a dumbbell in one hand and place the opposite knee and hand on a bench. Keep your back straight and pull the dumbbell up to your chest, then lower it back down.",
             "equipment": "Dumbbell"
         },
         {
+            "exercise_category": "Back",
             "name": "Hyperextensions",
-            "region": "Lower Back",
+            "muscle_group": "Lower Back",
             "sets": 3,
             "reps": 15,
             "description": "Lie face down on a hyperextension machine and hook your feet under the pads. Cross your arms over your chest and lift your torso up as high as you can.",
             "equipment": "Hyperextension machine"
         },
         {
+            "exercise_category": "Back",
             "name": "Good Mornings",
-            "region": "Lower Back",
+            "muscle_group": "Lower Back",
             "sets": 4,
             "reps": 10,
             "description": "Stand with your feet shoulder-width apart and a barbell across your shoulders. Bend forward at the waist, keeping your back straight, then lift back up.",
             "equipment": "Barbell"
         },
         {
+            "exercise_category": "Back",
             "name": "Deadlifts",
-            "region": "Lower Back",
+            "muscle_group": "Lower Back",
             "sets": 5,
             "reps": 5,
             "description": "Stand with your feet shoulder-width apart and a barbell in front of you. Bend your knees and hips to grab the bar with your hands, then lift it up to your hips.",
             "equipment": "Barbell"
         },
         {
-            "exercise name": "Dumbbell pullovers",
-            "exercise region": "Upper and mid back, chest",
+            "exercise_category": "Back",
+            "name": "Dumbbell pullovers",
+            "muscle_group": "Upper and mid back, chest",
             "sets": 3,
             "reps": 12,
             "description": "Lie with your upper back across a bench, hold a dumbbell with both hands and extend your arms behind your",

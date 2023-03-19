@@ -1,0 +1,67 @@
+{
+    "chest-workouts": [
+        {
+            "exercise_category": "Chest",
+            "name": "Barbell bench press",
+            "muscle_group": "Chest, triceps and shoulders",
+            "sets": 3,
+            "reps": 8,
+            "description": "Lie down on your back with feet firmly planted on the ground. Grab barbell with neutral grip and lower the weight towards your chest, return the weight to starting position",
+            "equipment": "Barbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Incline barbell bench press",
+            "muscle_group": "Upper chest, shoulders, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Set bench to a 45 degree angle and lie on your back. Unrack the barbell and lower it to your chest, return the weight to starting position.",
+            "equipment": "Barbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Decline barbell bench press",
+            "muscle_group": "Lower chest, shoulders, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Set bench to -45 degree angle and lie on your back. Unrack the barbell and lower it to your chest, return the weight to starting position.",
+            "equipment": "Barbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Dumbbell bench press",
+            "muscle_group": "Chest, shoulders, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Lie on your back with your feet firmly planted on the ground. Press dumbbells above your chest, then lower just above chest height. Return to starting position. ",
+            "equipment": "Dumbbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Incline dumbbell bench press",
+            "muscle_group": "Upper chest, shoulders, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Set bench to 45 degree angle and lie on your back. Raise dumbbell over your head and lower it to your chest, return the weight to starting position.",
+            "equipment": "Dumbbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Decline dumbbell bench press",
+            "muscle_group": "Lower chest, shoulders, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Set bench to -45 degree angle and lie on your back. Raise dumbbell over your head and lower it to your chest, return the weight to starting position.",
+            "equipment": "Dumbbell"
+        },
+        {
+            "exercise_category": "Chest",
+            "name": "Push-ups",
+            "muscle_group": "Chest, triceps",
+            "sets": 3,
+            "reps": 10,
+            "description": "Start with your arms shoulder-width apart in a plank position with your arms fully extended. Lower your body towards the ground with your elbows tucked in. Return to starting position.",
+            "equipment": "None"
+        }
+    ]
+}
