@@ -8,7 +8,7 @@ router.get('/', exercises.getAll);
 
 router.get('/:id', exercises.getSingle);
 
-router.post('/', exercises.createUser);
+router.post('/', exercises.createExercise);
 
 // router.put('/:id', user_info.updatePlayer);
 
