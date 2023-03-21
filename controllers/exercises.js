@@ -38,13 +38,10 @@ const getSingle = (req, res) => {
 
 const createExercise = async (req, res) => {
   const exercise = {
-    // CHANGE THIS INFO TO MATCH EXERCISE VALUE
-    email : req.body.email, 
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    weight: req.body.weight,
-    height: req.body.height,
-    goals: req.body.goals,
+    name: req.body.name,
+    description: req.body.description,
+    image: req.body.image, //BASE 64
+    categories: req.body.categories
   };
   const response = await mongodb.getDb().db("Lift").collection('exercises').insertOne(exercise);
   if (response.acknowledged) {
