@@ -5,10 +5,14 @@ const port = process.env.PORT || 8080;
 
 const app = express();
 
-
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+app.use(bodyParser.json());
 
 app
-  .use(bodyParser.json())
   .use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
