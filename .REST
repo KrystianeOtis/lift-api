@@ -1,6 +1,16 @@
+################################################
+### GET ALL Users
 GET http://localhost:8080/users HTTP/1.1
+################################################
 
-### Create user
+################################################
+### GET SINGLE User
+GET http://localhost:8080/users/1 HTTP/1.1
+content-type: application/json
+################################################
+
+################################################
+### POST User
 POST http://localhost:8080/users HTTP/1.1
 content-type: application/json
 
@@ -12,3 +22,22 @@ content-type: application/json
     "height": "120",
     "goals": "I want to be taller"
 }
+################################################
+
+################################################
+### POST Exercise
+POST http://localhost:8080/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name" : "Flat Barbell Bench Press",
+    "description" : "Its a bench press",
+    "image" : "test",
+    "categories" : "Chest"
+}
+################################################
+
+################################################
+### GET ALL Exercise
+GET http://localhost:8080/exercises HTTP/1.1
+################################################
