@@ -10,7 +10,7 @@ router.get('/:id', user_info.getSingle);
 
 router.post('/', user_info.createUser);
 
-// router.put('/:id', user_info.updatePlayer);
+router.put('/:id', user_info.updateUser);
 
 router.delete('/:id', user_info.deleteUser);
 
