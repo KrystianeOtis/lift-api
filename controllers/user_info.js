@@ -36,7 +36,7 @@ const getSingle = (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const player = {
+  const user = {
     email : req.body.email, 
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -44,7 +44,7 @@ const createUser = async (req, res) => {
     height: req.body.height,
     goals: req.body.goals,
   };
-  const response = await mongodb.getDb().db("Lift").collection('users').insertOne(player);
+  const response = await mongodb.getDb().db("Lift").collection('users').insertOne(user);
   if (response.acknowledged) {
     res.status(201).json(response);
   } else {
@@ -52,30 +52,29 @@ const createUser = async (req, res) => {
   }
 };
 
-// const updatePlayer = async (req, res) => {
-//   const userId = new ObjectId(req.params.id);
-//   // be aware of updateOne if you only want to update specific fields
-//   const player = {
-//     firstName: req.body.firstName,
-//     lastName: req.body.lastName,
-//     expLvl: req.body.expLvl,
-//     favCourse: req.body.favCourse,
-//     favDisc: req.body.favDisc,
-//     throwStyle: req.body.throwStyle,
-//     longestShot: req.body.longestShot
-//   };
-//   const response = await mongodb
-//     .getDb()
-//     .db()
-//     .collection('player_info')
-//     .replaceOne({ _id: userId }, player);
-//   console.log(response);
-//   if (response.modifiedCount > 0) {
-//     res.status(204).send();
-//   } else {
-//     res.status(500).json(response.error || 'Some error occurred while updating the player.');
-//   }
-// };
+const updateUser = async (req, res) => {
+  const userId = new ObjectId(req.params.id);
+  // be aware of updateOne if you only want to update specific fields
+  const user = {
+    email : req.body.email, 
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    weight: req.body.weight,
+    height: req.body.height,
+    goals: req.body.goals,
+  };
+  const response = await mongodb
+    .getDb()
+    .db('Lift')
+    .collection('users')
+    .replaceOne({ _id: userId }, user);
+  console.log(response);
+  if (response.modifiedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error || 'Some error occurred while updating the user.');
+  }
+};
 
 // const deletePlayer = async (req, res) => {
 //   if (!ObjectId.isValid(req.params.id)) {
@@ -95,6 +94,6 @@ module.exports = {
   getAll,
   getSingle,
   createUser,
-  // updatePlayer,
+  updateUser,
   // deletePlayer
 };
