@@ -18,7 +18,7 @@ const getAll = (req, res) => {
 
 const getSingle = (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid user id.');  
+    res.status(400).json('Must use a valid user id.');
   }
   const userID = new ObjectId(req.params.id);
   mongodb
@@ -36,8 +36,8 @@ const getSingle = (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const user = {
-    email : req.body.email, 
+  const player = {
+    email : req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     weight: req.body.weight,
@@ -56,7 +56,7 @@ const updateUser = async (req, res) => {
   const userId = new ObjectId(req.params.id);
   // be aware of updateOne if you only want to update specific fields
   const user = {
-    email : req.body.email, 
+    email : req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     weight: req.body.weight,
@@ -76,24 +76,24 @@ const updateUser = async (req, res) => {
   }
 };
 
-// const deletePlayer = async (req, res) => {
-//   if (!ObjectId.isValid(req.params.id)) {
-//     res.status(400).json('Must use a valid contact id to delete a contact.');
-//   }
-//   const userId = new ObjectId(req.params.id);
-//   const response = await mongodb.getDb().db().collection('player_info').remove({ _id: userId }, true);
-//   console.log(response);
-//   if (response.deletedCount > 0) {
-//     res.status(204).send();
-//   } else {
-//     res.status(500).json(response.error || 'Some error occurred while deleting the player.');
-//   }
-// };
+const deleteUser = async (req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to delete a user.');
+  }
+  const userId = new ObjectId(req.params.id);
+  const response = await mongodb.getDb().db("Lift").collection('users').remove({ _id: userId }, true);
+  console.log(response);
+  if (response.deletedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error || 'Some error occurred while deleting the user.');
+  }
+};
 
 module.exports = {
   getAll,
   getSingle,
   createUser,
   updateUser,
-  // deletePlayer
+  deleteUser
 };
