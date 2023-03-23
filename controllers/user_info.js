@@ -36,7 +36,7 @@ const getSingle = (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const player = {
+  const user = {
     email : req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
