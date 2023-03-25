@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Lift API",
+    "title": "Lift API",
+    "description": "An API designed to help manage exercises and build workouts.",
     "version": "1.0.0"
   },
   "host": "lift-api.onrender.com",
@@ -13,64 +13,70 @@
   "paths": {
     "/users/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "description": "Return all users from the database",
         "produces": [
           "application/json"
         ],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/mongoError"
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a single user",
+        "description": "Creates a single user in the database. This includes the email, first name, last name,   weight, height and goals of the user.",
         "parameters": [
           {
-            "name": "body",
+            "name": "User",
             "in": "body",
+            "description": "The user to create.",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "weight": {
-                  "example": "any"
-                },
-                "height": {
-                  "example": "any"
-                },
-                "goals": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/User"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/createdResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/duplicateError"
+            }
           }
         }
       }
     },
     "/users/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a single user",
+        "description": "Return a single user from the database by id",
         "produces": [
           "application/json"
         ],
@@ -79,7 +85,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The id of the user to update."
           }
         ],
         "responses": {
@@ -87,23 +94,63 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/mongoError"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user",
+        "description": "Update a user in the database.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "required": true,
+            "description": "The id of the user to update.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/createdResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Removes a user",
+        "description": "Remove a user from the database.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The id of the user to remove."
           }
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/deletedResponse"
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -116,58 +163,69 @@
     },
     "/exercises/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Exercises"
+        ],
+        "summary": "Get all exercises",
+        "description": "Return all exercises from the database",
         "produces": [
           "application/json"
         ],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Exercise"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/notFoundError"
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Exercises"
+        ],
+        "summary": "Create an exercise",
+        "description": "Creates an exercise and adds it to the database, this will include the name, description,   category and id of the exercise.",
         "parameters": [
           {
-            "name": "body",
+            "name": "Exercise",
             "in": "body",
+            "description": "Required information to add an exercise",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "image": {
-                  "example": "any"
-                },
-                "categories": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Exercise"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/createdResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/duplicateError"
+            }
           }
         }
       }
     },
     "/exercises/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Exercises"
+        ],
+        "summary": "Get a single exercise",
+        "description": "Return a single exercise from the database by its id",
         "produces": [
           "application/json"
         ],
@@ -176,79 +234,92 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The id of the exercise"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Exercise"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/notFoundError"
+            }
           }
         }
       }
     },
     "/userExercisePlan/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "description": "Return all users from the database",
         "produces": [
           "application/json"
         ],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/mongoError"
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a single user",
+        "description": "Creates a single user in the database. This includes the email, first name, last name,   weight, height and goals of the user.",
         "parameters": [
           {
-            "name": "body",
+            "name": "User",
             "in": "body",
+            "description": "The user to create.",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "weight": {
-                  "example": "any"
-                },
-                "height": {
-                  "example": "any"
-                },
-                "goals": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/User"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/createdResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/duplicateError"
+            }
           }
         }
       }
     },
     "/userExercisePlan/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a single user",
+        "description": "Return a single user from the database by id",
         "produces": [
           "application/json"
         ],
@@ -257,7 +328,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The id of the user to update."
           }
         ],
         "responses": {
@@ -265,7 +337,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/mongoError"
+            }
           }
         }
       }
@@ -275,6 +350,128 @@
         "description": "",
         "parameters": [],
         "responses": {}
+      }
+    }
+  },
+  "definitions": {
+    "Exercise": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "641a4266a3524c7fb2f0ba35"
+        },
+        "name": {
+          "type": "string",
+          "example": "Decline Barbell Bench Press"
+        },
+        "description": {
+          "type": "string",
+          "example": "A decline barbell bench press."
+        },
+        "image": {
+          "type": "string",
+          "example": "test"
+        },
+        "categories": {
+          "type": "string",
+          "example": "Chest"
+        },
+        "id": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "kenaa@example.com"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "weight": {
+          "type": "number",
+          "example": 100
+        },
+        "height": {
+          "type": "number",
+          "example": 150
+        },
+        "goals": {
+          "type": "string",
+          "example": "any"
+        }
+      }
+    },
+    "createdResponse": {
+      "type": "object",
+      "properties": {
+        "acknowledged": {
+          "type": "boolean",
+          "example": true
+        },
+        "insertedId": {
+          "type": "string",
+          "example": "63d06d25ac5027cccc3c5eb6"
+        }
+      }
+    },
+    "deletedResponse": {
+      "type": "object",
+      "properties": {
+        "acknowledged": {
+          "type": "boolean",
+          "example": true
+        },
+        "deletedCount": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "mongoError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Mongo error"
+        }
+      }
+    },
+    "invalidIdError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Invalid Exercise ID: provided ID is not an integer"
+        }
+      }
+    },
+    "notFoundError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Exercise with id ${id} not found"
+        }
+      }
+    },
+    "duplicateError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Exercise with id already exists"
+        }
       }
     }
   }

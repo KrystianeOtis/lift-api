@@ -2,9 +2,13 @@ const mongodb = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = (req, res) => {
+  /* #swagger.tags = ['Exercise Plans'] 
+     #swagger.summary = 'Get all exercises'  
+     #swagger.description = 'Return all exercises from the database'
+    */
   mongodb
     .getDb()
-    .db("Lift")
+    .db('Lift')
     .collection('userExercisePlan')
     .find()
     .toArray((err, lists) => {
@@ -17,13 +21,17 @@ const getAll = (req, res) => {
 };
 
 const getSingle = (req, res) => {
+  /* #swagger.tags = ['Exercise Plans'] 
+     #swagger.summary = 'Get all exercises'  
+     #swagger.description = 'Return all exercises from the database'
+    */
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid exercise id.');  
+    res.status(400).json('Must use a valid exercise id.');
   }
   const userID = new ObjectId(req.params.id);
   mongodb
     .getDb()
-    .db("Lift")
+    .db('Lift')
     .collection('userExercisePlan')
     // CHANGE THIS TO MATCH THE USERID NAME
     .find({ userID: userID })
@@ -37,16 +45,24 @@ const getSingle = (req, res) => {
 };
 
 const createExercisePlan = async (req, res) => {
+  /* #swagger.tags = ['Exercise Plans'] 
+     #swagger.summary = 'Get all exercises'  
+     #swagger.description = 'Return all exercises from the database'
+    */
   const exercisePlan = {
     // CHANGE THIS INFO TO MATCH EXERCISE VALUE
-    email : req.body.email, 
+    email: req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     weight: req.body.weight,
     height: req.body.height,
-    goals: req.body.goals,
+    goals: req.body.goals
   };
-  const response = await mongodb.getDb().db("Lift").collection('userExercisePlan').insertOne(exercisePlan);
+  const response = await mongodb
+    .getDb()
+    .db('Lift')
+    .collection('userExercisePlan')
+    .insertOne(exercisePlan);
   if (response.acknowledged) {
     res.status(201).json(response);
   } else {
@@ -96,7 +112,7 @@ const createExercisePlan = async (req, res) => {
 module.exports = {
   getAll,
   getSingle,
-  createExercisePlan,
+  createExercisePlan
   // updatePlayer,
   // deletePlayer
 };
