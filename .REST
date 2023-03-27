@@ -30,8 +30,8 @@ POST http://localhost:8080/exercises HTTP/1.1
 content-type: application/json
 
 {
-    "name" : "Flat Barbell Bench Press",
-    "description" : "Its a bench press",
+    "name" : "Incline Dumbbell Bench Press",
+    "description" : "Its a dumbbell incline bench press",
     "image" : "test",
     "categories" : "Chest"
 }
@@ -41,3 +41,10 @@ content-type: application/json
 ### GET ALL Exercise
 GET http://localhost:8080/exercises HTTP/1.1
 ################################################
+
+################################################
+### GET SINGLE exercise
+GET http://localhost:8080/exercises/4 HTTP/1.1
+
+################################################
+

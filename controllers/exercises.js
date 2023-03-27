@@ -1,5 +1,4 @@
 const mongodb = require('../db/connect');
-const ObjectId = require('mongodb').ObjectId;
 
 const getAll = (req, res) => {
   mongodb
@@ -17,22 +16,25 @@ const getAll = (req, res) => {
 };
 
 const getSingle = (req, res) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid exercise id.');  
-  }
-  const userID = new ObjectId(req.params.id);
+  const id = parseInt(req.params.id);
   mongodb
     .getDb()
-    .db("Lift")
-    .collection('exercise')
-    // CHANGE THIS TO MATCH ID, IT MIGHT NOT BE STORED AS USERID
-    .find({ userID: userID })
-    .toArray((err, result) => {
-      if (err) {
+    .db('Lift')
+    .collection('exercises')
+    .find({ id: id })
+    .toArray(function (err, docs) {
+      if (err) { // Mongo Error
         res.status(400).json({ message: err });
+      } else if (isNaN(id)) { // ID is not an int
+        res.status(400).json({ message: `Invalid Exercise ID : provided id is not an integer` });
+      } else if (docs.length === 0) { // No results found
+        res.status(404).json({ message: `Exercise with id ${id} not found` });
+      } else if (docs.length > 1) { // More than one record has the same ID
+        res.status(500).json({ message: `Multiple exercises found with id ${id}` });
+      } else {
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(docs[0]);
       }
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(result[0]);
     });
 };
 
