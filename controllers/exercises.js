@@ -1,4 +1,5 @@
 const mongodb = require('../db/connect');
+const { ObjectId } = require('mongodb');
 
 /** Retrieves all exercises */
 const getAll = (req, res) => {
