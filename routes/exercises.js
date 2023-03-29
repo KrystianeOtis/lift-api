@@ -12,6 +12,8 @@ router.post('/', exercises.createExercise);
 
 router.put('/:id', exercises.updateExercise);
 
-// router.delete('/:id', user_info.deletePlayer);
+router.delete('/:id', exercises.deleteExercise);
+
+router.get('/category/:category', exercises.getByCategory);
 
 module.exports = router;
