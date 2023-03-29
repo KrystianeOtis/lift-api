@@ -1,5 +1,4 @@
 const mongodb = require('../db/connect');
-const { ObjectId } = require('mongodb');
 
 /** Retrieves all exercises */
 const getAll = (req, res) => {
@@ -36,9 +35,6 @@ const getSingle = (req, res) => {
       description: 'The id of the exercise',
      }
   */
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid exercise id.');
-  }
   const id = parseInt(req.params.id);
   mongodb
     .getDb()
@@ -58,8 +54,8 @@ const getSingle = (req, res) => {
       } else if (docs.length > 1) { // More than one record has the same ID
         res.status(500).json({ message: `Multiple exercises found with id ${id}` });
       } else {
-       /* #swagger.responses[200] = {
-        schema: { $ref: '#/definitions/Exercise' }
+      /* #swagger.responses[200] = {
+      schema: { $ref: '#/definitions/Exercise' }
       } */
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(docs[0]);
@@ -79,6 +75,7 @@ const createExercise = async (req, res) => {
         schema: { $ref: '#/definitions/Exercise' } 
      }
   */
+ try {
   const exercise = {
     name: req.body.name,
     description: req.body.description,
@@ -99,34 +96,97 @@ const createExercise = async (req, res) => {
         schema: { $ref: '#/definitions/duplicateError' }
       } 
     */
+   console.log(response);
     res.status(500).json(response.error || 'Some error occurred while creating the exercise.');
   }
+} catch (err) {
+  let outputErr = {}
+  // If there was a syntax error in the req body
+  if (err.errInfo.details.schemaRulesNotSatisfied.length > 0) {
+    err.errInfo.details.schemaRulesNotSatisfied.forEach((rule) => {
+      rule.propertiesNotSatisfied.forEach((property) => {
+        // console.log(property.details[0].specifiedAs);
+        outputErr[
+          property.propertyName
+        ] = `${property.propertyName} ${property.details[0].reason} type ${property.details[0].specifiedAs.bsonType} or is missing`;
+      });
+    // Send 400 and the reason
+    res.status(400).json(outputErr)
+    });
+  }
+  else {
+    console.log(err.errInfo.details);
+    res.status(500).json(err.errInfo.details || "Something is not quite right")
+}
+}
 };
+/** Retrieve a single exercise */
+const updateExercise = async (req, res) => {
+  /* #swagger.tags = ['Exercises'] 
+     #swagger.summary = 'Update a single exercise'  
+     #swagger.description = 'Updates a single exercise from the database by its id'
+     #swagger.parameters['id'] = {
+      description: 'The id of the exercise',
+     }
+  */
+  const id = parseInt(req.params.id);
+  try {
+    const result = await mongodb.getDb().db('Lift').collection('exercises').find({ id: id });
+    console.log(result);
+  } catch (err) {
+    console.log(err);
+  }
+  // try {
+  //   const collection = mongodb.getDb().db('Lift').collection('exercises');
+  //   const filter = { id: id };
+  //   const bodyKeys = Object.keys(req.body);
+  //   const updateDoc = {}
+  //   for (const key of bodyKeys) {
+  //     updateDoc[key] = req.body[key];
+  //   }
+  //   const result = await collection.findOneAndUpdate(filter, { $set: updateDoc }, { returnOriginal: false, upsert: false });
+  //   if (!result.value) {
+  //     // if no document was found with the given filter, return a 404 Not Found error
+  //     return res.status(404).send('Exercise not found');
+  //   }
+  //   // return the result
+  //   return res.send(result);
+  // } catch(err) {
+  //   // handle any other errors with a 500 Internal Server Error
+  //   console.error(err);
+  //   return res.status(500).send('Internal Server Error');
+  // }
 
-// const updateExercise = async (req, res) => {
-//   const userId = new ObjectId(req.params.id);
-//   // be aware of updateOne if you only want to update specific fields
-//   const player = {
-//     firstName: req.body.firstName,
-//     lastName: req.body.lastName,
-//     expLvl: req.body.expLvl,
-//     favCourse: req.body.favCourse,
-//     favDisc: req.body.favDisc,
-//     throwStyle: req.body.throwStyle,
-//     longestShot: req.body.longestShot
-//   };
-//   const response = await mongodb
-//     .getDb()
-//     .db()
-//     .collection('player_info')
-//     .replaceOne({ _id: userId }, player);
-//   console.log(response);
-//   if (response.modifiedCount > 0) {
-//     res.status(204).send();
-//   } else {
-//     res.status(500).json(response.error || 'Some error occurred while updating the player.');
-//   }
-// };
+
+  // mongodb
+  //   .getDb()
+  //   .db('Lift')
+  //   .collection('exercises')
+  //   .findOne({ id: id })
+  //   .toArray(function (err, docs) {
+  //     if (err) { // Mongo Error
+  //       /* #swagger.responses[400] = {
+  //       schema: { $ref: '#/definitions/notFoundError' }
+  //     } */
+  //       res.status(400).json({ message: err });
+  //     } else if (isNaN(id)) { // ID is not an int
+  //       res.status(400).json({ message: `Invalid Exercise ID : provided id is not an integer` });
+  //     } else if (docs.length === 0) { // No results found
+  //       res.status(404).json({ message: `Exercise with id ${id} not found` });
+  //     } else if (docs.length > 1) { // More than one record has the same ID
+  //       res.status(500).json({ message: `Multiple exercises found with id ${id}` });
+  //     } else {
+  //     /* #swagger.responses[200] = {
+  //     schema: { $ref: '#/definitions/Exercise' }
+  //     } */
+  //       res.setHeader('Content-Type', 'application/json');
+  //       res.status(200).json(docs[0]);
+  //     }
+  //   });
+  // } finally {
+  //   console.log();
+  // }
+};
 
 // const deleteExercise = async (req, res) => {
 //   if (!ObjectId.isValid(req.params.id)) {
@@ -145,7 +205,7 @@ const createExercise = async (req, res) => {
 module.exports = {
   getAll,
   getSingle,
-  createExercise
-  // updatePlayer,
+  createExercise,
+  updateExercise,
   // deletePlayer
 };

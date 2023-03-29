@@ -49,20 +49,27 @@ const createExercisePlan = async (req, res) => {
      #swagger.summary = 'Get all exercises'  
      #swagger.description = 'Return all exercises from the database'
     */
-  const exercisePlan = {
-    // CHANGE THIS INFO TO MATCH EXERCISE VALUE
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    weight: req.body.weight,
-    height: req.body.height,
-    goals: req.body.goals
+
+  const exercises = req.body.exercises.map((exercise) => ({
+    exercise_id: exercise.exercise_id,
+    reps: exercise.reps,
+    sets: exercise.sets,
+    weight: exercise.weight
+  }));
+
+  const document = {
+    _id: req.body._id,
+    exercises: exercises,
+    user: req.body.user,
+    toDoDate: new Date(req.body.toDoDate),
+    planNumber: req.body.planNumber
   };
+
   const response = await mongodb
     .getDb()
     .db('Lift')
     .collection('userExercisePlan')
-    .insertOne(exercisePlan);
+    .insertOne(document);
   if (response.acknowledged) {
     res.status(201).json(response);
   } else {

@@ -4,7 +4,7 @@ const router = express.Router();
 
 const userExercisePlan = require('../controllers/user_info');
 
-router.get('/', userExercisePlan.getAll); 
+router.get('/', userExercisePlan.getAll);
 
 router.get('/:id', userExercisePlan.getSingle);
 
