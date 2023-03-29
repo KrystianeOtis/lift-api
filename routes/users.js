@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const createError = require('http-errors');
 
-const user_info = require('../controllers/user_info');
+const user_info = require('../controllers/users');
 
 router.get('/', user_info.getAll);
 
