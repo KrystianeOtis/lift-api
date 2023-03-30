@@ -1,12 +1,17 @@
 ################################################
 ### GET ALL Users
 GET http://localhost:8080/users HTTP/1.1
+
+# Simply valid all the time (hopefully)
+
 ################################################
 
 ################################################
 ### GET SINGLE User
-GET http://localhost:8080/users/1 HTTP/1.1
-content-type: application/json
+GET http://localhost:8080/users/2 HTTP/1.1
+
+# Needs valid userID
+
 ################################################
 
 ################################################
@@ -18,10 +23,40 @@ content-type: application/json
     "email" : "test@test.test", 
     "firstName": "Brian",
     "lastName": "Peterson",
-    "weight" : "120",
-    "height": "120",
-    "goals": "I want to be taller"
+    "goals": ["I want to be taller"]
 }
+
+# example
+# {
+#     "email" : "test@test.test", 
+#     "firstName": "Brian",
+#     "lastName": "Peterson",
+#     "weight" : "120", // optional
+#     "height": "120", // optional
+#     "goals": "I want to be taller"
+# }
+
+################################################
+
+################################################
+### UPDATE SINGLE user
+PUT http://localhost:8080/users/1 HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Jane"
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+
+################################################
+
+################################################
+### DELETE SINGLE user
+DELETE http://localhost:8080/users/1 HTTP/1.1
+
+# Needs valid userID
+
 ################################################
 
 ################################################
@@ -30,21 +65,77 @@ POST http://localhost:8080/exercises HTTP/1.1
 content-type: application/json
 
 {
-    "name" : "Incline Dumbbell Bench Press",
-    "description" : "Its a dumbbell incline bench press",
-    "image" : "test",
-    "categories" : "Chest"
+    "name" : "Test Press"
+
 }
+
+# example
+# {
+#     "name" : "Test Press",
+#     "description" : "This is a test of the system",
+#     "image" : "https://.com",
+#     "categories" : ["Test"]
+# }
 ################################################
 
 ################################################
 ### GET ALL Exercise
 GET http://localhost:8080/exercises HTTP/1.1
+
+# Simply valid all the time (hopefully)
+
 ################################################
 
 ################################################
 ### GET SINGLE exercise
-GET http://localhost:8080/exercises/4 HTTP/1.1
+GET http://localhost:8080/exercises/12 HTTP/1.1
+
+# Needs valid exerciseID
 
 ################################################
 
+################################################
+### UPDATE SINGLE exercise
+PUT http://localhost:8080/exercises/9 HTTP/1.1
+content-type: application/json
+
+{
+    "hi": 4
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+
+################################################
+
+################################################
+### DELETE SINGLE exercise
+DELETE http://localhost:8080/exercises/14 HTTP/1.1
+
+# Needs valid exerciseID
+
+################################################
+
+################################################
+### GET exercises by category
+GET http://localhost:8080/exercises/category/chest HTTP/1.1
+
+# Needs valid string at the end for the category
+
+################################################
+
+################################################
+### CREATE userExercisePlan
+POST http://localhost:8080/userExercisePlan/1
+
+# Not finished
+
+################################################
+
+
+################################################
+### GET ALL userExercisePlan 
+GET http://localhost:8080/userExercisePlan HTTP/1.1
+
+# Not finished
+
+################################################

@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 // const createError = require('http-errors');
 
-const user_info = require('../controllers/user_info');
+const user_info = require('../controllers/users');
 
 router.get('/', user_info.getAll);
 
-router.get('/:id', user_info.getSingle);
+router.get('/:userID', user_info.getSingle);
 
 router.post('/', user_info.createUser);
 
-router.put('/:id', user_info.updateUser);
+router.put('/:userID', user_info.updateUser);
 
-router.delete('/:id', user_info.deleteUser);
+router.delete('/:userID', user_info.deleteUser);
 
 module.exports = router;

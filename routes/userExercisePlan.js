@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 // const createError = require('http-errors');
 
-const userExercisePlan = require('../controllers/user_info');
+const userExercisePlan = require('../controllers/users');
 
-router.get('/', userExercisePlan.getAll); 
+router.get('/', userExercisePlan.getAll);
 
 router.get('/:id', userExercisePlan.getSingle);
 
