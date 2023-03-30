@@ -230,7 +230,6 @@ const updateExercise = async (req, res) => {
       res.status(201).json(`Update Success`);
     }
   } catch (err) {
-    let outputErr = {};
     console.log(err.errInfo.details);
     res.status(500).json(err.errInfo.details || 'Something is not quite right');
   }
