@@ -1,5 +1,5 @@
 const mongodb = require('../db/connect');
-const ObjectId = require('mongodb').ObjectId;
+var Double = require('mongodb').Double;
 
 const getAll = (req, res) => {
   /* #swagger.tags = ['Users'] 
@@ -26,34 +26,44 @@ const getAll = (req, res) => {
     });
 };
 
+/** Retrieve a single user */
 const getSingle = (req, res) => {
   /* #swagger.tags = ['Users'] 
      #swagger.summary = 'Get a single user'  
-     #swagger.description = 'Return a single user from the database by id'
-     #swagger.parameters['id'] = {
-      description: 'The id of the user to update.',
-      } */
-  if (!ObjectId.isValid(req.params.id)) {
-    /* #swagger.responses[400] = {
-        schema: { $ref: '#/definitions/invalidIdError' }
-      } */
-    res.status(400).json('Must use a valid user id.');
-  }
-  const userID = new ObjectId(req.params.id);
+     #swagger.description = 'Return a single user from the database by its userID'
+     #swagger.parameters['userID'] = {
+      description: 'The id of the user',
+     }
+  */
+  const userID = parseInt(req.params.userID);
   mongodb
     .getDb()
     .db('Lift')
     .collection('users')
     .find({ userID: userID })
-    .toArray((err, result) => {
+    .toArray(function (err, docs) {
       if (err) {
+        // Mongo Error
         /* #swagger.responses[400] = {
-        schema: { $ref: '#/definitions/mongoError' }
-        } */
+        schema: { $ref: '#/definitions/notFoundError' }
+      } */
         res.status(400).json({ message: err });
+      } else if (isNaN(userID)) {
+        // ID is not an int
+        res.status(400).json({ message: `Invalid user ID : provided userID is not an integer` });
+      } else if (docs.length === 0) {
+        // No results found
+        res.status(404).json({ message: `user with id ${userID} not found` });
+      } else if (docs.length > 1) {
+        // More than one record has the same ID
+        res.status(500).json({ message: `Multiple users found with id ${userID}` });
+      } else {
+        /* #swagger.responses[200] = {
+      schema: { $ref: '#/definitions/user' }
+      } */
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(docs[0]);
       }
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(result[0]);
     });
 };
 
@@ -68,92 +78,155 @@ const createUser = async (req, res) => {
       required: true,
       schema: { $ref: '#/definitions/User' }
   } */
-  const user = {
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    weight: req.body.weight,
-    height: req.body.height,
-    goals: req.body.goals
-  };
-  const response = await mongodb.getDb().db('Lift').collection('users').insertOne(user);
-  if (response.acknowledged) {
-    /* #swagger.responses[201] = {
-        schema: { $ref: '#/definitions/createdResponse' }
-      } */
-    res.status(201).json(response);
-  } else {
-    /*
-      #swagger.responses[500] = {
-        schema: { $ref: '#/definitions/duplicateError' }
-      } 
-    */
-    res.status(500).json(response.error || 'Some error occurred while creating the player.');
+  try {
+    const user = {
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      goals: req.body.goals,
+      // Optional weight and height, default 0
+      height: req.body.height ? Double(req.body.height) : Double(0),
+      weight: req.body.weight ? Double(req.body.weight) : Double(0)
+    };
+    if (isNaN(user.weight) || isNaN(user.height)) {
+      res.status(500).json('Error in converting weight or height to double');
+    }
+    const response = await mongodb.getDb().db('Lift').collection('users').insertOne(user);
+    if (response.acknowledged) {
+      /* #swagger.responses[201] = {
+          schema: { $ref: '#/definitions/createdResponse' }
+        } */
+      res.status(201).json(response);
+    } else {
+      /*
+        #swagger.responses[500] = {
+          schema: { $ref: '#/definitions/duplicateError' }
+        } 
+      */
+      res.status(500).json(response.error || 'Some error occurred while creating the player.');
+    }
+  } catch (err) {
+    let outputErr = {};
+    console.log(err);
+    if (err.errInfo.details.schemaRulesNotSatisfied.length > 0) {
+      err.errInfo.details.schemaRulesNotSatisfied.forEach((rule) => {
+        rule.propertiesNotSatisfied.forEach((property) => {
+          console.log(property.details);
+          outputErr[
+            property.propertyName
+          ] = `${property.propertyName} ${property.details[0].reason} type ${property.details[0].specifiedAs.bsonType} or is missing`;
+        });
+      });
+      // Send 400 and the reason
+      res.status(400).json(outputErr);
+    } else {
+      console.log(err.errInfo.details);
+      res.status(500).json(err.errInfo.details || 'Something is not quite right');
+    }
   }
 };
 
 const updateUser = async (req, res) => {
   /* #swagger.tags = ['Users'] 
-     #swagger.summary = 'Update a user'  
-     #swagger.description = 'Update a user in the database.'
-     #swagger.parameters['id'] = {
-      in: 'body',
-      description: 'The id of the user to update.',
-      required: true,
-      schema: { $ref: '#/definitions/User' }
+     #swagger.summary = 'Update a single user'  
+     #swagger.description = 'Updates a single user from the database by its userID'
+     #swagger.parameters['userID'] = {
+      description: 'The id of the user',
      }
-    */
-  const userId = new ObjectId(req.params.id);
-  // be aware of updateOne if you only want to update specific fields
-  const user = {
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    weight: req.body.weight,
-    height: req.body.height,
-    goals: req.body.goals
-  };
-  const response = await mongodb
+  */
+  const userID = parseInt(req.params.userID);
+  if (isNaN(userID)) {
+    res.status(400).json('Provided ID is not in integer format');
+  }
+  let targetUser = {};
+  const docs = await mongodb
     .getDb()
     .db('Lift')
     .collection('users')
-    .replaceOne({ _id: userId }, user);
-  console.log(response);
-  if (response.modifiedCount > 0) {
-    /* #swagger.responses[204] = {
-        schema: { $ref: '#/definitions/createdResponse' }
-      } */
-    res.status(204).send();
+    .find({ userID: userID })
+    .toArray();
+
+  if (docs.length === 0) {
+    // No results found
+    res.status(404).json({ message: `user with id ${userID} not found` });
+  } else if (docs.length > 1) {
+    // More than one record has the same ID
+    res.status(500).json({ message: `Multiple users found with id ${userID}` });
   } else {
-    res.status(500).json(response.error || 'Some error occurred while updating the user.');
+    console.log(docs);
+    targetUser = docs[0];
+  }
+
+  try {
+    const user = {
+      firstName: req.body.firstName || targetUser.firstName,
+      lastName: req.body.lastName || targetUser.lastName,
+      email: req.body.email || targetUser.email,
+      weight: req.body.weight || targetUser.weight,
+      height: req.body.height || targetUser.height,
+      goals: req.body.goals || targetUser.goals
+    };
+    const response = await mongodb
+      .getDb()
+      .db('Lift')
+      .collection('users')
+      .updateOne({ _id: targetUser._id }, { $set: user });
+    if (!response.acknowledged) {
+      res.status(500).json('Update request could not be completed at this time');
+    }
+    if (response.modifiedCount == 0) {
+      res
+        .status(400)
+        .json(
+          'No Modifications made. Key and/or value may be incorrect if modifications were expected'
+        );
+    }
+    if (response.upsertedCount > 0) {
+      /*
+      #swagger.responses[500] = {
+        schema: { $ref: '#/definitions/duplicateError' }
+      } 
+      */
+      res.status(500).json('Data was unintentionally created');
+    }
+    if (response.modifiedCount > 0) {
+      /*
+      #swagger.responses[201] = {
+        schema: { $ref: '#/definitions/createdResponse' }
+      } 
+      */
+      res.status(201).json(`Update Success`);
+    }
+  } catch (err) {
+    console.log(err.errInfo.details);
+    res.status(500).json(err.errInfo.details || 'Something is not quite right');
   }
 };
 
 const deleteUser = async (req, res) => {
-  /* #swagger.tags = ['Users'] 
-     #swagger.summary = 'Removes a user'  
-     #swagger.description = 'Remove a user from the database.'
-     #swagger.parameters['id'] = {
-      description: 'The id of the user to remove.'
-     }
-    */
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid contact id to delete a user.');
+  const userID = parseInt(req.params.userID);
+  if (isNaN(userID)) {
+    // ID is not an int
+    res.status(400).json({ message: `Invalid user ID : provided id is not an integer` });
   }
-  const userId = new ObjectId(req.params.id);
-  const response = await mongodb
-    .getDb()
-    .db('Lift')
-    .collection('users')
-    .remove({ _id: userId }, true);
-  console.log(response);
-  if (response.deletedCount > 0) {
-    /* #swagger.responses[204] = {
-        schema: { $ref: '#/definitions/deletedResponse' }
-      } */
-    res.status(204).send();
-  } else {
-    res.status(500).json(response.error || 'Some error occurred while deleting the user.');
+  try {
+    const response = await mongodb
+      .getDb()
+      .db('Lift')
+      .collection('users')
+      .deleteOne({ userID: userID });
+    if (!response.acknowledged) {
+      res.status(500).json('Update request could not be completed at this time');
+    }
+    if (response.deletedCount == 0) {
+      res.status(400).json('No user matched for deletion.');
+    }
+    if (response.deletedCount > 0) {
+      res.status(200).json(`user with id ${userID} deleted`);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 
