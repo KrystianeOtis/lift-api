@@ -8,7 +8,7 @@ GET http://localhost:8080/users HTTP/1.1
 
 ################################################
 ### GET SINGLE User
-GET http://localhost:8080/users/2 HTTP/1.1
+GET http://localhost:8080/users/12 HTTP/1.1
 
 # Needs valid userID
 
@@ -20,10 +20,10 @@ POST http://localhost:8080/users HTTP/1.1
 content-type: application/json
 
 {
-    "email" : "test@test.test", 
-    "firstName": "Brian",
-    "lastName": "Peterson",
-    "goals": ["I want to be taller"]
+    "email" : "var19008@byui.edu", 
+    "firstName": "Thomas",
+    "lastName": "Vargas",
+    "goals": ["Reach 10% bfp", "Increase Deadlift to 405"]
 }
 
 # example
@@ -40,11 +40,11 @@ content-type: application/json
 
 ################################################
 ### UPDATE SINGLE user
-PUT http://localhost:8080/users/1 HTTP/1.1
+PUT http://localhost:8080/users/14 HTTP/1.1
 content-type: application/json
 
 {
-    "firstName": "Jane"
+    "goals": ["Reach 10% bfp", "Increase Deadlift to 405", "Increase bench press"]
 }
 
 # Valid fields are name, description, image, and categories (array of strings)
@@ -53,7 +53,7 @@ content-type: application/json
 
 ################################################
 ### DELETE SINGLE user
-DELETE http://localhost:8080/users/1 HTTP/1.1
+DELETE http://localhost:8080/users/14 HTTP/1.1
 
 # Needs valid userID
 
@@ -65,8 +65,10 @@ POST http://localhost:8080/exercises HTTP/1.1
 content-type: application/json
 
 {
-    "name" : "Test Press"
-
+    "name" : "Arnold Press",
+    "description" : "A shoulder press where the bottom starts underhanded and the weight twists during the lift",
+    "image" : "https://picsum.photos/200",
+    "categories" : ["Front Delt", "Medial Delt"]
 }
 
 # example
@@ -88,7 +90,7 @@ GET http://localhost:8080/exercises HTTP/1.1
 
 ################################################
 ### GET SINGLE exercise
-GET http://localhost:8080/exercises/12 HTTP/1.1
+GET http://localhost:8080/exercises/19 HTTP/1.1
 
 # Needs valid exerciseID
 
@@ -96,11 +98,15 @@ GET http://localhost:8080/exercises/12 HTTP/1.1
 
 ################################################
 ### UPDATE SINGLE exercise
-PUT http://localhost:8080/exercises/9 HTTP/1.1
+PUT http://localhost:8080/exercises/19 HTTP/1.1
 content-type: application/json
 
 {
-    "hi": 4
+    "categories": [
+    "Front Delt",
+    "Medial Delt",
+    "Upper Chest"
+  ]
 }
 
 # Valid fields are name, description, image, and categories (array of strings)
@@ -109,7 +115,7 @@ content-type: application/json
 
 ################################################
 ### DELETE SINGLE exercise
-DELETE http://localhost:8080/exercises/14 HTTP/1.1
+DELETE http://localhost:8080/exercises/19 HTTP/1.1
 
 # Needs valid exerciseID
 
@@ -129,8 +135,20 @@ POST http://localhost:8080/userExercisePlan/2 HTTP/1.1
 content-type: application/json
 
 {
-    "toDoDate" : "2023-07-26",
+    "toDoDate" : "2023-03-20T12:00+06:00",
     "exercises" : [
+        {
+            "exerciseID" : 10,
+            "reps" : 12,
+            "sets" : 3,
+            "weight" : 60
+        },
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        },
         {
             "exerciseID" : 10,
             "reps" : 12,
@@ -211,5 +229,52 @@ GET http://localhost:8080/userExercisePlan/2 HTTP/1.1
 GET http://localhost:8080/userExercisePlan/2/7 HTTP/1.1
 
 # Not finished
+
+################################################
+
+################################################
+### UPDATE SINGLE userExercisePlan
+PUT http://localhost:8080/userExercisePlan/2/8 HTTP/1.1
+content-type: application/json
+
+{
+    "exercises" : [
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        },
+        {
+            "exerciseID" : 10,
+            "reps" : 12,
+            "sets" : 3,
+            "weight" : 60
+        },
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        }
+    ]
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+################################################
+
+################################################
+### DELETE SINGLE userExercisePlan
+DELETE http://localhost:8080/userExercisePlan/8 HTTP/1.1
+
+# Needs valid planID
+
+################################################
+
+################################################
+### GET ALL userExercisePlan
+GET http://localhost:8080/userExercisePlan/ HTTP/1.1
+
+# Simply valid all the time (hopefully)
 
 ################################################
