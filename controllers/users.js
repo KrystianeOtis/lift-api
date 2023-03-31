@@ -153,17 +153,27 @@ const updateUser = async (req, res) => {
     // More than one record has the same ID
     res.status(500).json({ message: `Multiple users found with id ${userID}` });
   } else {
-    console.log(docs);
     targetUser = docs[0];
   }
 
   try {
+    // targetUser.height and weight return in integer format
+    const height = isNaN(targetUser.height)
+      ? Double(req.body.height) || Double(0)
+      : Double(targetUser.height);
+
+    const weight = isNaN(targetUser.weight)
+      ? Double(req.body.weight) || Double(0)
+      : Double(targetUser.weight);
+
     const user = {
       firstName: req.body.firstName || targetUser.firstName,
       lastName: req.body.lastName || targetUser.lastName,
       email: req.body.email || targetUser.email,
       weight: req.body.weight || targetUser.weight,
       height: req.body.height || targetUser.height,
+      height: height,
+      weight: weight,
       goals: req.body.goals || targetUser.goals
     };
     const response = await mongodb
@@ -198,8 +208,8 @@ const updateUser = async (req, res) => {
       res.status(201).json(`Update Success`);
     }
   } catch (err) {
-    console.log(err.errInfo.details);
-    res.status(500).json(err.errInfo.details || 'Something is not quite right');
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 
