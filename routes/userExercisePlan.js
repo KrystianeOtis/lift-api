@@ -10,8 +10,8 @@ router.get('/:userID/:planID', userExercisePlan.getSingle);
 
 router.post('/:userID', userExercisePlan.createUserExercisePlan);
 
-// router.put('/:id', user_info.updatePlayer);
+router.put('/:userID/:planID', userExercisePlan.updateUserExercisePlan);
 
-// router.delete('/:id', user_info.deletePlayer);
+router.delete('/:planID', userExercisePlan.deleteUserExercisePlan);
 
 module.exports = router;
