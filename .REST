@@ -1,12 +1,17 @@
 ################################################
 ### GET ALL Users
 GET http://localhost:8080/users HTTP/1.1
+
+# Simply valid all the time (hopefully)
+
 ################################################
 
 ################################################
 ### GET SINGLE User
-GET http://localhost:8080/users/1 HTTP/1.1
-content-type: application/json
+GET http://localhost:8080/users/12 HTTP/1.1
+
+# Needs valid userID
+
 ################################################
 
 ################################################
@@ -15,13 +20,43 @@ POST http://localhost:8080/users HTTP/1.1
 content-type: application/json
 
 {
-    "email" : "test@test.test", 
-    "firstName": "Brian",
-    "lastName": "Peterson",
-    "weight" : "120",
-    "height": "120",
-    "goals": "I want to be taller"
+    "email" : "var19008@byui.edu", 
+    "firstName": "Thomas",
+    "lastName": "Vargas",
+    "goals": ["Reach 10% bfp", "Increase Deadlift to 405"]
 }
+
+# example
+# {
+#     "email" : "test@test.test", 
+#     "firstName": "Brian",
+#     "lastName": "Peterson",
+#     "weight" : "120", // optional
+#     "height": "120", // optional
+#     "goals": "I want to be taller"
+# }
+
+################################################
+
+################################################
+### UPDATE SINGLE user
+PUT http://localhost:8080/users/14 HTTP/1.1
+content-type: application/json
+
+{
+    "goals": ["Reach 10% bfp", "Increase Deadlift to 405", "Increase bench press"]
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+
+################################################
+
+################################################
+### DELETE SINGLE user
+DELETE http://localhost:8080/users/14 HTTP/1.1
+
+# Needs valid userID
+
 ################################################
 
 ################################################
@@ -30,21 +65,216 @@ POST http://localhost:8080/exercises HTTP/1.1
 content-type: application/json
 
 {
-    "name" : "Incline Dumbbell Bench Press",
-    "description" : "Its a dumbbell incline bench press",
-    "image" : "test",
-    "categories" : "Chest"
+    "name" : "Arnold Press",
+    "description" : "A shoulder press where the bottom starts underhanded and the weight twists during the lift",
+    "image" : "https://picsum.photos/200",
+    "categories" : ["Front Delt", "Medial Delt"]
 }
+
+# example
+# {
+#     "name" : "Test Press",
+#     "description" : "This is a test of the system",
+#     "image" : "https://.com",
+#     "categories" : ["Test"]
+# }
 ################################################
 
 ################################################
 ### GET ALL Exercise
 GET http://localhost:8080/exercises HTTP/1.1
+
+# Simply valid all the time (hopefully)
+
 ################################################
 
 ################################################
 ### GET SINGLE exercise
-GET http://localhost:8080/exercises/4 HTTP/1.1
+GET http://localhost:8080/exercises/19 HTTP/1.1
+
+# Needs valid exerciseID
 
 ################################################
 
+################################################
+### UPDATE SINGLE exercise
+PUT http://localhost:8080/exercises/19 HTTP/1.1
+content-type: application/json
+
+{
+    "categories": [
+    "Front Delt",
+    "Medial Delt",
+    "Upper Chest"
+  ]
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+
+################################################
+
+################################################
+### DELETE SINGLE exercise
+DELETE http://localhost:8080/exercises/19 HTTP/1.1
+
+# Needs valid exerciseID
+
+################################################
+
+################################################
+### GET exercises by category
+GET http://localhost:8080/exercises/category/chest HTTP/1.1
+
+# Needs valid string at the end for the category
+
+################################################
+
+################################################
+### CREATE userExercisePlan
+POST http://localhost:8080/userExercisePlan/2 HTTP/1.1
+content-type: application/json
+
+{
+    "toDoDate" : "2023-03-20T12:00+06:00",
+    "exercises" : [
+        {
+            "exerciseID" : 10,
+            "reps" : 12,
+            "sets" : 3,
+            "weight" : 60
+        },
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        },
+        {
+            "exerciseID" : 10,
+            "reps" : 12,
+            "sets" : 3,
+            "weight" : 60
+        },
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        }
+    ]
+}
+
+# Examples
+# {
+#     "toDoDate" : "2023-07-26",
+#     "exercises" : [
+#         {
+#             "exerciseID" : 9,
+#             "reps" : 12,
+#             "sets" : 3,
+#             "weight" : 60
+#         },
+#         {
+#             "exerciseID" : 11,
+#             "reps" : 12,
+#             "sets" : 10,
+#             "weight" : 60
+#         }
+#     ]
+# }
+
+# TODODATE SPECIFICATIONS
+# The formats are as follows. Exactly the components shown here must be present, with exactly this punctuation. 
+# Note that the "T" appears literally in the string, to indicate the beginning of the time element, as specified in ISO 8601.
+
+#    Year:
+#       YYYY (eg 1997)
+#    Year and month:
+#       YYYY-MM (eg 1997-07)
+#    Complete date:
+#       YYYY-MM-DD (eg 1997-07-16)
+#    Complete date plus hours and minutes:
+#       YYYY-MM-DDThh:mmTZD (eg 1997-07-16T19:20+01:00)
+#    Complete date plus hours, minutes and seconds:
+#       YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
+#    Complete date plus hours, minutes, seconds and a decimal fraction of a
+# second
+#       YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
+
+# where:
+
+#      YYYY = four-digit year
+#      MM   = two-digit month (01=January, etc.)
+#      DD   = two-digit day of month (01 through 31)
+#      hh   = two digits of hour (00 through 23) (am/pm NOT allowed)
+#      mm   = two digits of minute (00 through 59)
+#      ss   = two digits of second (00 through 59)
+#      s    = one or more digits representing a decimal fraction of a second
+#      TZD  = time zone designator (Z or +hh:mm or -hh:mm)
+
+
+################################################
+
+
+################################################
+### GET ALL userExercisePlan 
+GET http://localhost:8080/userExercisePlan/2 HTTP/1.1
+
+# Not finished
+
+################################################
+
+################################################
+### GET SINGLE userExercisePlan 
+GET http://localhost:8080/userExercisePlan/2/7 HTTP/1.1
+
+# Not finished
+
+################################################
+
+################################################
+### UPDATE SINGLE userExercisePlan
+PUT http://localhost:8080/userExercisePlan/2/8 HTTP/1.1
+content-type: application/json
+
+{
+    "exercises" : [
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        },
+        {
+            "exerciseID" : 10,
+            "reps" : 12,
+            "sets" : 3,
+            "weight" : 60
+        },
+        {
+            "exerciseID" : 13,
+            "reps" : 8,
+            "sets" : 10,
+            "weight" : 30
+        }
+    ]
+}
+
+# Valid fields are name, description, image, and categories (array of strings)
+################################################
+
+################################################
+### DELETE SINGLE userExercisePlan
+DELETE http://localhost:8080/userExercisePlan/8 HTTP/1.1
+
+# Needs valid planID
+
+################################################
+
+################################################
+### GET ALL userExercisePlan
+GET http://localhost:8080/userExercisePlan/ HTTP/1.1
+
+# Simply valid all the time (hopefully)
+
+################################################

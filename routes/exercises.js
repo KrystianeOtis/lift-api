@@ -4,14 +4,16 @@ const router = express.Router();
 
 const exercises = require('../controllers/exercises.js');
 
-router.get('/', exercises.getAll); 
+router.get('/', exercises.getAll);
 
 router.get('/:id', exercises.getSingle);
 
 router.post('/', exercises.createExercise);
 
-// router.put('/:id', user_info.updatePlayer);
+router.put('/:id', exercises.updateExercise);
 
-// router.delete('/:id', user_info.deletePlayer);
+router.delete('/:id', exercises.deleteExercise);
+
+router.get('/category/:category', exercises.getByCategory);
 
 module.exports = router;
