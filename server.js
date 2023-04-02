@@ -12,7 +12,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: 'a long, randomly-generated string stored in env',
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://lift-api.onrender.com',
   clientID: 'bafcrB6pwgaZDBSIibzJQYMam1VQj1j0',
   issuerBaseURL: 'https://dev-ey5u7shi2g025s5w.us.auth0.com'
 };
