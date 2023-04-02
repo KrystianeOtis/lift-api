@@ -4,10 +4,10 @@ Lift is a web-based fitness app that provides users with workout routines, exerc
 
 ## Dependencies
 The backend for Lift is built using Node.js and the following dependencies:
-*MongoDB: NoSQL database
-*Swagger: API documentation tool
-*Render: Hosting and deployment platform
-*Visual Studio Code: Integrated development environment
+* MongoDB: NoSQL database
+* Swagger: API documentation tool
+* Render: Hosting and deployment platform
+* Visual Studio Code: Integrated development environment
 
 ## API Endpoints
 Lift has the following API endpoints:
