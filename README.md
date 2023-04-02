@@ -1,12 +1,13 @@
 # Lift - Fitness App
-Lift is a web-based fitness application. The application allows users to track their fitness progress, set fitness goals, and find exercises that suit their needs.
+## About
+Lift is a web-based fitness app that provides users with workout routines, exercise details, and allows them to set goals. This repository contains the backend code for Lift, including the API and routes that handle data retrieval and manipulation.
 
-## Technologies Used
-* Javascript: The programming language used to build the frontend and backend of the application.
-* MongoDB: A NoSQL database used to store and retrieve data from the application.
-* Swagger: An API documentation tool used to document the API endpoints.
-* Render: A cloud-based platform used to host the application.
-* Visual Studio Code: A lightweight and powerful code editor used by the development team to write and debug the code.
+## Dependencies
+The backend for Lift is built using Node.js and the following dependencies:
+*MongoDB: NoSQL database
+*Swagger: API documentation tool
+*Render: Hosting and deployment platform
+*Visual Studio Code: Integrated development environment
 
 ## API Endpoints
 Lift has the following API endpoints:
@@ -23,8 +24,24 @@ Lift has the following API endpoints:
 * `POST /exercises`: Create a exercise.
 * `GET /exercises/{id}`: Get a single exercise.
 
+## API Documentation
+You can find the Swagger API documentation for Lift's backend at the following URL:
+
+* https://lift-api.onrender.com/api-docs/
+
+The Swagger documentation provides detailed information on each API endpoint, including input and output parameters, example requests and responses, and error codes.
+
+## Security
+Security is a top priority for Lift's backend. 
+User authentication and authorization are handled by Auth0, which provides a secure, scalable, and customizable solution for identity management.
+
+For more information on how we use Auth0 with our backend technology stack, see the [Auth0 documentation](https://auth0.com/docs/get-started).
+
 ## Contributors
 * Krystiane Otis
 * Thomas Vargas
 * Dallin Gilbert
 * Eli Aiono
+
+## License
+This project is licensed under the MIT License. Visit the [MIT license page](https://choosealicense.com/licenses/mit/).
