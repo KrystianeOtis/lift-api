@@ -2,7 +2,7 @@
 ## About
 Lift is a web-based fitness app that provides users with workout routines, exercise details, and allows them to set goals. This repository contains the backend code for Lift, including the API and routes that handle data retrieval and manipulation.
 
-## Dependencies
+## Technologies Used
 The backend for Lift is built using Node.js and the following dependencies:
 * MongoDB: NoSQL database
 * Swagger: API documentation tool
